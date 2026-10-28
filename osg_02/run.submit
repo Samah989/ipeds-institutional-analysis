@@ -1,0 +1,22 @@
+container_image = /cvmfs/singularity.opensciencegrid.org/htc/ubuntu:22.04
+
+executable = run.sh
+
+transfer_input_files = run_analysis.py, requirements.txt, src, data
+transfer_output_files = results
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+request_cpus   = 1
+request_memory = 2 GB
+request_disk   = 2 GB
+
++JobDurationCategory = "Medium"
+
+max_retries = 2
+
+log    = logs/job.$(Cluster).log
+output = logs/job.$(Cluster).out
+error  = logs/job.$(Cluster).err
+
+queue 1

@@ -1,0 +1,43 @@
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Cached data pulls (regenerable) and results (large)
+data/*.parquet
+data/*.csv
+results/*.csv
+results/*.png
+results/*.pdf
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Jupyter output cells (uncomment if you want clean diffs)
+# *.ipynb
+
+.venv/
+venv/
+deps/
+.claude/
+.idea/
+.ipynb_checkpoints/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.DS_Store
+*.parquet
+*.mp3
+data/
+results/
+logs/
+osg_01/

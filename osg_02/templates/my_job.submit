@@ -1,0 +1,29 @@
+# EXERCISE: Fill in the blanks to create a submit file.
+# Hint: the submit file tells HTCondor what container, what script,
+#       what files to ship, and how much resources you need.
+
+# 1. Which container image to use?
+container_image = /cvmfs/singularity.opensciencegrid.org/opensciencegrid/_______
+
+# 2. Which script does the worker run?
+executable = _______
+
+# 3. Which files does the worker need? (your script, requirements, source code, data)
+transfer_input_files = _______, _______, _______, _______
+transfer_output_files = _______
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# 4. How much resources does your job need?
+request_cpus   = _______
+request_memory = _______ GB
+request_disk   = _______ GB
+
++JobDurationCategory = "_______"
+
+# 5. Where do HTCondor logs go?
+log    = _______/job.$(Cluster).log
+output = _______/job.$(Cluster).out
+error  = _______/job.$(Cluster).err
+
+queue 1

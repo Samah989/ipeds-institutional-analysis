@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------------------
+# HTCondor submit file: run one RQ regression with 1,000 bootstrap replicates.
+# Target: ap40.uw.osg-htc.org (OSPool)
+# Usage:
+#     condor_submit run_regression.submit          # queues all 3 RQs
+#     condor_submit -a 'rq_number=1' run_regression.submit  # single RQ
+# ---------------------------------------------------------------------------
+
+# Ubuntu 24.04, not 20.04: requirements-osg.txt pins a stack that needs
+# Python 3.11+, and 20.04 ships Python 3.8 (and left standard support in
+# May 2025).  `:latest` is a moving tag -- pin an explicit one before
+# publishing results you need to reproduce years from now.
+container_image = /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-ubuntu-24.04:latest
+
+executable = run_regression.sh
+arguments  = $(rq_number)
+
+# `bash pull_data.sh` (on the access point, not as a job) fills ../data with
+# parquet.  HTCondor strips the path, so it lands as `data/` next to the
+# script -- exactly where src/data_pull.py looks for it.
+transfer_input_files = run_regression.py, requirements-osg.txt, ../src, ../data
+
+transfer_output_files = results
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# Measured, not guessed: the largest RQ peaks at 840 MB and finishes 1,000
+# bootstrap replicates in about 2 minutes, single-threaded.  Asking for 8 GB
+# and 2 CPUs (as this file used to) just makes the job wait longer to match.
+request_cpus   = 1
+request_memory = 2 GB
+request_disk   = 4 GB
+
++JobDurationCategory = "Short"
+
+max_retries = 2
+# OS is provided by container_image above; no additional host-OS requirement needed.
+
+log             = logs/regress.$(Cluster).$(Process).log
+output          = logs/regress.$(Cluster).$(Process).out
+error           = logs/regress.$(Cluster).$(Process).err
+stream_output   = True
+stream_error    = True
+
+# Queue all three RQs by default. Comment out and use -a to run a subset.
+queue rq_number from (
+    1
+    2
+    3
+)

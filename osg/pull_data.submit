@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------------------
+# DEPRECATED  -  do not condor_submit this file.
+#
+# This job made live HTTPS calls to educationdata.urban.org from an OSPool
+# execute node. OSPool worker nodes are opportunistic/heterogeneous and
+# generally do NOT provide general outbound internet access (only a Squid
+# proxy scoped to software repos like CVMFS/PyPI, not arbitrary third-party
+# REST APIs)  -  this job would very likely fail with a proxy/connection error
+# on most sites, and even where it didn't, making bulk calls to a non-OSG
+# external API from anonymous grid workers isn't an appropriate use of
+# shared opportunistic compute per the OSPool Acceptable Use Policy
+# (https://osg-htc.org/docs/submit/ap-ospool-aup/).
+#
+# The data pull now runs directly on the access point instead  -  see
+# `pull_data.sh` and `launch.sh pull`, which ssh in and run it there, then
+# ship the resulting parquet into `run_regression.submit` via
+# transfer_input_files (the way HTCondor is supposed to be used for external
+# data: fetch once on the submit side, ship read-only input into the job).
+#
+# This file is kept only as a historical reference for what NOT to do.
+# ---------------------------------------------------------------------------

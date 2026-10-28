@@ -1,0 +1,20 @@
+container_image = /cvmfs/singularity.opensciencegrid.org/htc/ubuntu:22.04
+
+executable = run.sh
+
+transfer_input_files = regression.py, students.csv
+transfer_output_files = result.csv
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+request_cpus   = 1
+request_memory = 1 GB
+request_disk   = 1 GB
+
++JobDurationCategory = "Medium"
+
+log    = logs/demo.$(Cluster).log
+output = logs/demo.$(Cluster).out
+error  = logs/demo.$(Cluster).err
+
+queue 1
